@@ -31,7 +31,15 @@ class ProgramRepository extends ServiceEntityRepository
             ->setMaxResults(3)
             ->getQuery()
             ->getResult()
-        ;
+            ;
+    }
+
+    // /**
+    //  * @return Program[] Returns an array of Program objects
+    //  */
+    public function getSeasons()
+    {
+        return $this->getSeasons();
     }
 
 

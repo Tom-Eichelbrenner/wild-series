@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+{% block title %}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <h1 class="mx-auto my-5">Saison {{ season.number }} de {{ program.title }}</h1>
+        </div>
+        <div class="row">
+            <p class="text-justify">{{ season.description }}</p>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <p>Liste des épisodes</p>
+
+                    <ul class="list-group">
+                        {% for episode in episodes %}
+                            <div class="row">
+                                <li class="list-group-item bg-secondary">
+                                    <a href="/wild/episode/{{ episode.id }}" class="text-primary">Episode {{ episode.number }} : {{ episode.title }}</a>
+                                </li>
+                            </div>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-4">
+                    <img class="align-self-start mr-3" src="{{ program.poster }}" alt="{{ program.title }} poster">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
