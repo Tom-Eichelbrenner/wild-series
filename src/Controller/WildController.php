@@ -57,6 +57,8 @@ class WildController extends AbstractController
             '/-/',
             ' ', ucwords(trim(strip_tags($slug)), "-")
         );
+        $slug = urldecode($slug);
+        echo $slug;
         $program = $this->getDoctrine()
             ->getRepository(Program::class)
             ->findOneBy(['title' => mb_strtolower($slug)]);
@@ -86,12 +88,8 @@ class WildController extends AbstractController
     /**
      * @Route("/episode/{id}", name="episode", requirements={"id"="[0-9-]+"})
      */
-    public function showEpisode(int $id): Response
+    public function showEpisode(Episode $episode): Response
     {
-        $episode = $this->getDoctrine()
-            ->getRepository(Episode::class)
-            ->findOneBy(['id' => $id]);
-
         $season = $episode->getSeason();
         $program = $season->getProgram();
 
