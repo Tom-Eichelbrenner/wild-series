@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Actor;
 use App\Entity\Category;
 use App\Entity\Episode;
 use App\Entity\Program;
@@ -58,7 +59,6 @@ class WildController extends AbstractController
             ' ', ucwords(trim(strip_tags($slug)), "-")
         );
         $slug = urldecode($slug);
-        echo $slug;
         $program = $this->getDoctrine()
             ->getRepository(Program::class)
             ->findOneBy(['title' => mb_strtolower($slug)]);
@@ -95,4 +95,16 @@ class WildController extends AbstractController
 
         return $this->render('/wild/episode.html.twig', ['season' => $season, 'program' => $program, 'episode' => $episode]);
     }
+
+    /**
+     * @Route("/actor/{id}", name="actor", requirements={"id"="[0-9-]+"})
+     */
+    public function showActor(Actor $actor): Response
+    {
+        $name = $actor->getName();
+        $programs = $actor->getPrograms();
+
+        return $this->render('/wild/actor.html.twig', ['name' => $name, 'programs' => $programs]);
+    }
+
 }

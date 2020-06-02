@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ name }}{% endblock %}
+
+{% block body %}
+    <h1>Fiche de l'acteur {{ name }} </h1>
+    <h2> Programs : </h2>
+
+    {% for program in programs %}
+        <div>
+            <ul>
+                <li><h2>
+                        <a href="{{ path('wild_show', { 'slug': program.title|replace({' ': '-'})|lower }) }}"> {{ program.title }}</a>
+                    </h2>
+                </li>
+            </ul>
+        </div>
+    {% endfor %}
+    <a href="{{ path('app_index') }}">
+        Retour à l'accueil
+    </a>
+{% endblock %}
