@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Symfony\Component\Mime\Email;
 use App\Entity\Program;
 use App\Form\ProgramType;
 use App\Repository\ProgramRepository;
@@ -9,6 +10,7 @@ use App\Service\Slugify;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -29,7 +31,7 @@ class ProgramController extends AbstractController
     /**
      * @Route("/new", name="program_new", methods={"GET","POST"})
      */
-    public function new(Request $request, Slugify $slugify): Response
+    public function new(Request $request, Slugify $slugify, MailerInterface $mailer): Response
     {
         $program = new Program();
         $form = $this->createForm(ProgramType::class, $program);
@@ -41,6 +43,19 @@ class ProgramController extends AbstractController
             $program->setSlug($slug);
             $entityManager->persist($program);
             $entityManager->flush();
+
+            $email = (new Email())
+                ->from($this->getParameter('mailer_from'))
+                ->to('lebgdu28@bg.swag')
+                ->subject('Une nouvelle série vient d\'être publiée :'.$program->getTitle().' !')
+                ->html($this->renderView('program/mail.html.twig',
+                [
+                    'title' => $program->getTitle(),
+                    'link' => "http://localhost:8000/wild/program/$slug"
+                ]));
+
+
+            $mailer->send($email);
 
             return $this->redirectToRoute('program_index');
         }
