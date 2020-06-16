@@ -3,16 +3,35 @@
 {% block title %}All programs{% endblock %}
 
 {% block body %}
-    <h1>Toutes les séries de la table program : </h1>
-    {% for program in programs %}
-        <div>
-            <a href="{{ path('wild_show', { 'slug': program.title|replace({' ': '-'})|lower }) }}"> <h2>{{ loop.index }} / {{ program.title }} - Catégorie : {{ program.category.name }}</h2></a>
-            <p>{{ program.summary }}</p>
+    <div class="container-fluid">
+        <div class="row">
+            {% for program in programs %}
+                <div class="col-3">
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="{{ program.poster }}" alt="{{ program.title }} poster">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ program.title }}</h5>
+                            <p class="card-text">{{program.summary}}</p>
+                            <a href="{{ path('wild_show', { 'slug': program.title|replace({' ': '-'})|lower }) }}" class="btn btn-primary">Watch this program</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-    {% else %}
-        Aucune série trouvée.
-    {% endfor %}
-    <a href="{{ path('app_index') }}">
-        Retour à l'accueil
-    </a>
+    </div>
+    {#    {% for program in programs %}#}
+    {#        <div class="container-fluid">#}
+    {#            <div class="row">#}
+    {#                <img src="{{ program.poster }}" style="height: 300px; width: auto">#}
+    {#                <a href="{{ path('wild_show', { 'slug': program.title|replace({' ': '-'})|lower }) }}">#}
+    {#                    <h2>{{ program.title }} - Catégorie : {{ program.category.name }}</h2></a>#}
+    {#                    <p>{{ program.summary }}</p>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    {% else %}#}
+    {#        Aucune série trouvée.#}
+    {#    {% endfor %}#}
+    {#    <a href="{{ path('app_index') }}">#}
+    {#        Retour à l'accueil#}
+    {#    </a>#}
 {% endblock %}
